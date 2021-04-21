@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SSDBV2StoreContainer" CdmEntityContainer="SSDBV2Container">
+    <EntitySetMapping Name="Personas">
+      <EntityTypeMapping TypeName="IsTypeOf(SSDBV2.Persona)">
+        <MappingFragment StoreEntitySet="Personas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="TDoc_Id" ColumnName="TDoc_Id" />
+          <ScalarProperty Name="NDoc" ColumnName="NDoc" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Tp_Id" ColumnName="Tp_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PersonaMaterias">
+      <EntityTypeMapping TypeName="IsTypeOf(SSDBV2.PersonaMateria)">
+        <MappingFragment StoreEntitySet="PersonaMaterias">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Materia_Id" ColumnName="Materia_Id" />
+          <ScalarProperty Name="Persona_Id" ColumnName="Persona_Id" />
+          <ScalarProperty Name="Notas_Materias_Id" ColumnName="Notas_Materias_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Materias">
+      <EntityTypeMapping TypeName="IsTypeOf(SSDBV2.Materia)">
+        <MappingFragment StoreEntitySet="Materias">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NotasMaterias">
+      <EntityTypeMapping TypeName="IsTypeOf(SSDBV2.NotasMateria)">
+        <MappingFragment StoreEntitySet="NotasMaterias">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Notas" ColumnName="Notas" />
+          <ScalarProperty Name="Periodo_Id" ColumnName="Periodo_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TDocs">
+      <EntityTypeMapping TypeName="IsTypeOf(SSDBV2.TDoc)">
+        <MappingFragment StoreEntitySet="TDocs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TipoPersonas">
+      <EntityTypeMapping TypeName="IsTypeOf(SSDBV2.TipoPersona)">
+        <MappingFragment StoreEntitySet="TipoPersonas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Rol" ColumnName="Rol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Periodoes">
+      <EntityTypeMapping TypeName="SSDBV2.Periodo">
+        <MappingFragment StoreEntitySet="Periodoes">
+          <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
+          <ScalarProperty Name="NombreP" ColumnName="NombreP" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

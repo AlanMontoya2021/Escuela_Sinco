@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e55ecb9da63c4c96bdcf59c59bc168f2" Name="Diagram1" ZoomLevel="63" >
+      <Diagram DiagramId="e55ecb9da63c4c96bdcf59c59bc168f2" Name="Diagram1" ZoomLevel="131" >
         <EntityTypeShape EntityType="SSDBV2.Persona" Width="1.5" PointX="4.25" PointY="1.125" />
-        <EntityTypeShape EntityType="SSDBV2.PersonaMateria" Width="1.625" PointX="1.125" PointY="0.5" />
+        <EntityTypeShape EntityType="SSDBV2.PersonaMateria" Width="1.625" PointX="1.625" PointY="0.5" />
         <EntityTypeShape EntityType="SSDBV2.Materia" Width="1.5" PointX="0.5" PointY="3.75" />
         <EntityTypeShape EntityType="SSDBV2.NotasMateria" Width="1.5" PointX="2.75" PointY="4.75" />
         <EntityTypeShape EntityType="SSDBV2.TDoc" Width="1.5" PointX="6.625" PointY="0.625" />

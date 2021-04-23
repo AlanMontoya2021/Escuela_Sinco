@@ -24,6 +24,6 @@ namespace SSV2.Models
         public string Nombre { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonaMateria> PersonaMateria { get; set; }
+        public  ICollection<PersonaMateria> PersonaMateria { get; set; }
     }
 }

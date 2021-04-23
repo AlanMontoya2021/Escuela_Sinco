@@ -36,8 +36,8 @@ function llenarTabla(m) {
 	otrosporcentajes.push(m.Porcentaje)
 	totalArregloPorcentaje=otrosporcentajes.reduce(function(a, b){ return a + b; })
 	nMateria.setAttribute("data-id", m.Id);
-	nMateria.innerHTML += `<td class="tdBoton "><button class="buttonEditar far fa-edit"onclick="AbrirEditar(${m.Id},'${m.NombreP}',${m.Porcentaje})">Editar</button>
-    <button class=" fas fa-trash-alt buttonEliminar" onclick="Eliminar(${m.Id})">Eliminar</button></td>`;
+	nMateria.innerHTML += `<td class="tdBoton "><button class="buttonEditar "onclick="AbrirEditar(${m.Id},'${m.NombreP}',${m.Porcentaje})">Editar</button>
+    <button class=" buttonEliminar" onclick="Eliminar(${m.Id})">Eliminar</button></td>`;
 	tabla.appendChild(nMateria);
 	inputNombre.value = "";
 }

@@ -4,7 +4,6 @@ botonMenu.addEventListener('click',MostrarNav);
 
 function MostrarNav(){
     if(botonMenu){
-        console.log('dio click')
       ver.forEach((mostrar) => {
 				mostrar.classList.toggle("hidden");
 			});

@@ -19,8 +19,8 @@ namespace SSV2.Models
         public int Persona_Id { get; set; }
         public Nullable<int> Notas_Materias_Id { get; set; }
     
-        public virtual Persona Persona { get; set; }
-        public virtual Materia Materias { get; set; }
-        public virtual NotasMateria NotasMaterias { get; set; }
+        public  Persona Persona { get; set; }
+        public  Materia Materias { get; set; }
+        public  NotasMateria NotasMaterias { get; set; }
     }
 }

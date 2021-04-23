@@ -8,7 +8,7 @@
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [SSBDV2];
+USE [db_a732e3_ssbdv2];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -33,7 +33,7 @@ CREATE TABLE [dbo].[Personas] (
     [Nombres] nvarchar(max)  NOT NULL,
     [Apellidos] nvarchar(max)  NOT NULL,
     [TDoc_Id] int  NOT NULL,
-    [NDoc] nvarchar(max)  NOT NULL,
+    [NDoc] varchar(10)   NULL,
     [Activo] bit  NOT NULL,
     [Tp_Id] int  NOT NULL
 );
@@ -80,7 +80,7 @@ GO
 -- Creating table 'Periodoes'
 CREATE TABLE [dbo].[Periodoes] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [NombreP] nvarchar(max)  NOT NULL
+    [NombreP] nvarchar(max)  NOT NULL,
 );
 GO
 
@@ -142,6 +142,8 @@ ADD CONSTRAINT [FK_PersonaTDoc]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
+ALTER  TABLE  [dbo].[Personas] WITH CHECK 
+   ADD CONSTRAINT [UQ_MyTable_Document] UNIQUE ([NDoc])
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PersonaTDoc'
 CREATE INDEX [IX_FK_PersonaTDoc]

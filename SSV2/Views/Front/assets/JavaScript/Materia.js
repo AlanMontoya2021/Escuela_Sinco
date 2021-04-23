@@ -6,63 +6,84 @@ const inputId = document.getElementById("idMateria");
 const nombreEditar = document.getElementById("nombreEditar");
 const btnGuardarMateria = document.getElementById("ButtonAddEditar");
 
-
-
-boton.addEventListener("click", () => {
-		Agregar(inputNombre.value);
-});
+const arrayMaterias = [];
 
 btnGuardarMateria.addEventListener("click", () => {
-	Editar(inputId.value, nombreEditar.value);
+  Editar(inputId.value, nombreEditar.value);
 });
 
 function listarMateria() {
-	fetch("https://localhost:44351/api/Materias")
-		.then((response) => response.json())
-		.then((materias) =>
-			materias.forEach((materia) => {
-				llenarTabla(materia);
-			})
-		);
+  fetch("https://localhost:44351/api/Materias")
+    .then((response) => response.json())
+    .then((materias) =>
+      materias.forEach((materia) => {
+        arrayMaterias.push(materia.Nombre);
+        llenarTabla(materia);
+      })
+    );
 }
 
+boton.addEventListener("click", (e) => {
+  if (arrayMaterias.some((materias) => inputNombre.value == materias)) {
+	  e.preventDefault();
+      swal(
+        "¡Transaccion Fallida! ",
+        "-Error el documento esta repetido \n -Campos Vacios",
+        "error"
+    );
+	inputNombre.value = "";
+  } else {
+	e.preventDefault();
+    Agregar(inputNombre.value),
+      
+        swal(
+          "¡Transaccion Exitosa! ",
+          "-Has Agregado un Materia",
+          "success"
+        )
+		inputNombre.value = "";
+  }
+});
+
 function llenarTabla(m) {
-	let nMateria = document.createElement("tr");
+  let nMateria = document.createElement("tr");
 
 	nMateria.innerHTML += "<td>" + m.Nombre + "</td>";
 	nMateria.setAttribute("data-id", m.Id);
-	nMateria.innerHTML += `<td class="tdBoton "><button class="buttonEditar far fa-edit"onclick="AbrirEditar(${m.Id},'${m.Nombre}')">Editar</button>
-    <button class=" fas fa-trash-alt buttonEliminar" onclick="ConfirmarEliminar(${m.Id})">Eliminar</button></td>`;
+	nMateria.innerHTML += `<td class="tdBoton "><button class="buttonEditar "onclick="AbrirEditar(${m.Id},'${m.Nombre}')">Editar</button>
+    <button class=" buttonEliminar" onclick="ConfirmarEliminar(${m.Id})">Eliminar</button></td>`;
 	tabla.appendChild(nMateria);
 	inputNombre.value = "";
+
 }
 
 function Agregar(m) {
-	fetch("https://localhost:44351/api/Materias", {
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json"
-		},
-		method: "POST",
-		body: JSON.stringify({
-			Nombre: m
-		})
-	},)
-	.then((response) => response.json())
-	.then((m) => {
-		llenarTabla(m);
-		swal ( "¡Transaccion Exitosa! " , "¡Se ha agregado una nueva materia! " , "success" );
-	});
+  fetch("https://localhost:44351/api/Materias", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
+      Nombre: m,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      llenarTabla(data);
+    });
 }
 
 function AbrirEditar(id, nombre) {
-	OpenUpdate();
-	inputId.value = id;
-	nombreEditar.value = nombre;
+  OpenUpdate();
+  inputId.value = id;
+  nombreEditar.value = nombre;
 }
 
-
 function Editar(id, nombre) {
+	if (nombre == "" ) {
+		swal("¡Transaccion Fallida! ", "Campos Vacios", "error");
+	  } else {
 	fetch("https://localhost:44351/api/Materias/" + id, {
 		headers: {
 			Accept: "application/json",
@@ -77,49 +98,48 @@ function Editar(id, nombre) {
 		let tr = document.querySelector(`tr[data-id="${id}"]`);
 	
 		tr.innerHTML = `<td>${nombre}</td><td class="tdBoton "><button class="buttonEditar far fa-edit"onclick="AbrirEditar(${id},'${nombre}')">Editar</button>
-    <button class=" fas fa-trash-alt buttonEliminar" onclick="Eliminar(${id})">Eliminar</button></td>`;
+    <button class=" buttonEliminar" onclick="Eliminar(${id})">Eliminar</button></td>`;
 	}),
 		limpiarDatos(),
 		CloseUpdate();
+	}
 }
 
 function Eliminar(id) {
-	ConfirmarEliminar();
-	fetch("https://localhost:44351/api/Materias/" + id, {
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json"
-		},
-		method: "DELETE",
-		body: JSON.stringify({
-			Id: parseInt(id)
-		})
-	}).then(() => {
-		let tr = document.querySelector(`tr[data-id="${id}"]`);
-		tabla.removeChild(tr);
-		inputId.value = "";
-		inputNombre.value = "";
-
-	});
+  ConfirmarEliminar();
+  fetch("https://localhost:44351/api/Materias/" + id, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "DELETE",
+    body: JSON.stringify({
+      Id: parseInt(id),
+    }),
+  }).then(() => {
+    let tr = document.querySelector(`tr[data-id="${id}"]`);
+    tabla.removeChild(tr);
+    inputId.value = "";
+    inputNombre.value = "";
+  });
 }
-function ConfirmarEliminar(id){
-	swal({
-		title: "Esta seguro de eliminar el alumno?",
-		text: "No podra recuperar la información del alumno si lo elimina",
-		icon: "warning",
-		buttons: true,
-		dangerMode: true,
-	  })
-	  .then((willDelete) => {
-		if (willDelete) {
-			Eliminar(id);
-		  swal("La materia ha sido eliminada correctamente", {
-			icon: "success",
-		  });
-		} else {
-		  swal("No se elimino la materia");
-		}
-	  });
+function ConfirmarEliminar(id) {
+  swal({
+    title: "Esta seguro de eliminar el alumno?",
+    text: "No podra recuperar la información del alumno si lo elimina",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      Eliminar(id);
+      swal("La materia ha sido eliminada correctamente", {
+        icon: "success",
+      });
+    } else {
+      swal("No se elimino la materia");
+    }
+  });
 }
 
 listarMateria();

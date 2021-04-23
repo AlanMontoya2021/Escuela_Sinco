@@ -28,7 +28,7 @@ namespace SSV2.Controllers
                         
                        select new
                     {
-                            IdDocente = a.Id,
+                            Id = a.Id,
                             IdMateria=a.Materia_Id,
                             IdPersona=a.Persona_Id,
                            NombrePersona = b.Nombres,

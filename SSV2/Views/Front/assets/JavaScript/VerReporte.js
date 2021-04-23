@@ -7,6 +7,7 @@ let nombreAlumno = document.getElementById("NombreEstudiante")
 let documento = document.getElementById("identificacion")
 let tipoDoc = document.getElementById("tipoDocumento")
 const tabla = document.querySelector(".TablaReporte");
+let promedio=[]
 
 async function listarNotas(a) {
 	await fetch("https://localhost:44351/api/Personas/"+a)
@@ -25,29 +26,27 @@ function llenarTabla(notas) {
 				nombreAlumno.innerHTML = n.Nombre+" "+n.Apellidos;
 				documento.innerHTML = n.NumeroDocumento;
 				tipoDoc.innerHTML = n.Tipodedocumento;
-				let promedio = (n.Notas[0].Notas+n.Notas[1].Notas)/2;
 				html += "<thead> <tr> <th>Nombre del Docente</th> <th>Materia</th> "
 				for (let index = 0; index < n.Notas.length; index++) {
-					console.log(n.Notas[index].NombreP)
-					html+="<th>"+n.Notas[index].NombreP+"</th>"
-					console.log(n.Notas[index].Porcentaje)
-					let calculonota1=(n.Notas[1].Notas * (n.Notas[1].Porcentaje / 100))*n.Notas[1].Notas
-					let calculonota2=(n.Notas[0].Notas * (n.Notas[0].Porcentaje / 100))*n.Notas[0].Notas
-					
-					
-	
-					console.log("textoooo"+(calculonota1+calculonota2)/3)
+					html+="<th>"+n.Notas[index].NombreP+"</th>";
+					promedio.push((n.Notas[index].Porcentaje /100) * n.Notas[index].Notas )
 				}
+				
                 html+="<th>Nota Final</th></tr> </thead>"
-				html+=`<tbody class="tbody"> 
+				html+=`<tbody class="tbody">
 				<tr id="tr" data-id="${n.Id}">
-						<td id="info">${n.Profesor[0].Nombres}</td>
-						<td id="info">${n.Materia}</td>
-						<td id="infoNotas">${(n.Notas[0]==null||n.Notas[0]==undefined)?"Aún no tiene nota asignada":n.Notas[0].Notas}</td>
-							<td id="infoNotas"> ${(n.Notas[1]==null||n.Notas[1]==undefined)?"Aún no tiene nota asignada":n.Notas[1].Notas}</td>
-							<td id="infoNotas"> </td>
-						</tr>
-						`;
+					<td id="info">${n.Profesor[0].Nombres}</td>
+					<td id="info">${n.Materia}</td> `
+				for (let index = 0; index < n.Notas.length; index++) {
+					
+					html+=`<td id="infoNotas">${(n.Notas[index]==null||n.Notas[index]==undefined)?"Aún no tiene nota asignada":n.Notas[index].Notas}</td>
+					
+					`
+					
+				}
+				let resultado=(promedio.reduce(function(a, b){ return a + b; })).toFixed(2)
+				html+=`<td id="infoNotas">${resultado} </td>
+					</tr>`
 				tabla.innerHTML = html;
 			}
 			

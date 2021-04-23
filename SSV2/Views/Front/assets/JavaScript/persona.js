@@ -13,30 +13,38 @@ let nombreEditar = document.getElementById("nombreEditar");
 let apellidoEditar = document.getElementById("apellidoEditar");
 let tipoIdEditar = document.getElementById("tipoIdEditar");
 let estadoEditar = document.getElementById("estadoEditar");
-
-
+let htmlLocation = window.location;
 
 boton.addEventListener("click", () => {
-	inputNombre = document.getElementById("nombre").value;
-	inputApellido = document.getElementById("apellido").value;
-	inputTipo = parseInt(document.getElementById("tipoId").value);
-	inputDocumento = document.getElementById("documento").value;
-	Agregar(inputNombre, inputApellido, inputTipo, inputDocumento);
+  inputNombre = document.getElementById("nombre").value;
+  inputApellido = document.getElementById("apellido").value;
+  inputTipo = parseInt(document.getElementById("tipoId").value);
+  inputDocumento = document.getElementById("documento").value;
+  Agregar(inputNombre, inputApellido, inputTipo, inputDocumento);
 });
 
-function listarAlumno() {
-	fetch("https://localhost:44351/api/Personas/ConsultarTodo")
-		.then((response) => response.json())
-		.then((personas) =>
-			personas.forEach((person) => {
-				if (person.Tp_Id == 1) {
-					llenarTablaAlumno(person);
-				}
-			})
-		);
+function listarPersona() {
+  fetch("https://localhost:44351/api/Personas/ConsultarTodo")
+    .then((response) => response.json())
+    .then((personas) =>
+      personas.forEach((persona) => {
+        console.log(persona)
+        if (
+          persona.Tp_Id == 1 &&
+          htmlLocation == "http://127.0.0.1:5500/views/alumnos.html"
+        ) {
+          llenarTablaPersona(persona);
+        } else if (
+          persona.Tp_Id == 2 &&
+          htmlLocation == "http://127.0.0.1:5500/views/maestros.html"
+        ) {
+            llenarTablaPersona(persona);
+        }
+      })
+    );
 }
 
-function llenarTablaAlumno(p) {
+function llenarTablaPersona(p) {
 	let profe = document.createElement("tr");
 
 	profe.innerHTML += `<td> ${p.NDoc} </td>
@@ -59,7 +67,14 @@ function llenarTablaAlumno(p) {
 	inputNombre.value = "";
 }
 
+function Capitalize(name){
+    return  name ? 
+    name[0].toUpperCase()+name.slice(1):
+    console.log("esta vacio")
+}
+
 function Agregar(nombre, apellido, tdoc, ndoc) {
+    
 	fetch("https://localhost:44351/api/Personas", {
 		headers: {
 			Accept: "application/json",
@@ -67,12 +82,12 @@ function Agregar(nombre, apellido, tdoc, ndoc) {
 		},
 		method: "POST",
 		body: JSON.stringify({
-			Nombres: nombre,
-			Apellidos: apellido,
+			Nombres: Capitalize(nombre),
+			Apellidos: Capitalize(apellido),
 			TDoc_Id: tdoc,
 			NDoc: ndoc,
 			Activo: true,
-			Tp_Id: 1
+			Tp_Id: ((htmlLocation == "http://127.0.0.1:5500/views/alumnos.html") ? 1 : 2)
 		})
 	})
 		.then((response) =>{ 
@@ -83,7 +98,7 @@ function Agregar(nombre, apellido, tdoc, ndoc) {
 			else{
 				swal ( "¡Transaccion Exitosa! " , "¡Se ha agregado un nuevo alumno! " , "success" );
 				response.json().then((a)=>{
-					llenarTablaAlumno(a);
+					llenarTablaPersona(a);
 				});
 			}
 
@@ -110,31 +125,37 @@ function AbrirEditar(id, nDoc, nombres, apellidos, tDoc, estado) {
 }
 
 function Editar(id, nDoc, nombres, apellidos, tDoc, estado) {
-	console.log(id, nDoc, nombres, apellidos, tDoc, estado);
-	fetch("https://localhost:44351/api/Personas/" + id, {
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json"
-		},
-		method: "PUT",
-		body: JSON.stringify({
-			Id: id,
-			Nombres: nombres,
-			Apellidos: apellidos,
-			Tdoc_Id: parseInt(tDoc),
-			NDoc: nDoc,
-			Activo: estado == "1" ? true : false,
-			Tp_Id: 1
-		})
-	})
-		.then((p) => {
-			swal ( "¡Transaccion Exitosa! " , "¡Se ha actualizado el alumno! " , "success" );
-			location.reload();
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-	CloseUpdate();
+	if (nombre == "" || apellidos == "" || tDoc == "" || nDoc == "" || estado == "") {
+		swal("¡Transaccion Fallida! ", "Diligencie todos los campos", "error");
+	} else {
+		fetch("https://localhost:44351/api/Personas/" + id, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json"
+				},
+				method: "PUT",
+				body: JSON.stringify({
+					Id: id,
+					Nombres: nombres,
+					Apellidos: apellidos,
+					Tdoc_Id: parseInt(tDoc),
+					NDoc: nDoc,
+					Activo: estado == "1" ? true : false,
+
+					Tp_Id: (htmlLocation == "http://127.0.0.1:5500/views/alumnos.html") ? 1 : 2
+
+				})
+
+			})
+			.then((p) => {
+				swal("¡Transaccion Exitosa! ", "¡Se ha actualizado el alumno! ", "success");
+				location.reload();
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+		CloseUpdate();
+	}
 }
 
 function Eliminar(id) {
@@ -148,18 +169,23 @@ function Eliminar(id) {
 		body: JSON.stringify({
 			Id: parseInt(id)
 		})
-	}).then(() => {
-		let tr = document.querySelector(`tr[data-id="${id}"]`);
-		tabla.removeChild(tr);
-		inputId.value = "";
-		inputNombre.value = "";
+	}).then((response) => {
+        if(response.status==400)
+		{
+            swal ( "¡Transaccion Fallida! " ,"Alumno asignado a una materia", "error" );
+        }else{
+            let tr = document.querySelector(`tr[data-id="${id}"]`);
+            tabla.removeChild(tr);
+        }
+
 
 	});
 }
+
 function ConfirmarEliminar(id){
 	swal({
-		title: "Esta seguro de eliminar el alumno?",
-		text: "No podra recuperar la información del alumno si lo elimina",
+		title: "Esta seguro de eliminar esta persona?",
+		text: "No podra recuperar la información de esta persona si lo elimina y por favor verifique que la persona no tenga una materia asiganda",
 		icon: "warning",
 		buttons: true,
 		dangerMode: true,
@@ -167,12 +193,12 @@ function ConfirmarEliminar(id){
 	  .then((willDelete) => {
 		if (willDelete) {
 			Eliminar(id);
-		  swal("El alumnmo ha sido eliminado correctamente", {
+		  swal("La persona ha sido eliminado correctamente", {
 			icon: "success",
 		  });
 		} else {
-		  swal("No se elimino el alumno");
+		  swal("No se elimino la persona");
 		}
 	  });
 }
-listarAlumno();
+listarPersona();

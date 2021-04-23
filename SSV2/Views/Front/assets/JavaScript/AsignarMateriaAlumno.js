@@ -9,15 +9,7 @@ const AlumnoEditar = document.getElementById("DocenteEditar");
 const MateriaEditar = document.getElementById("MateriaEditar");
 const EditarNota = document.getElementById("EditarNota");
 
-export async function fetch() {
-	await fetch("https://localhost:44351/api/PersonaMaterias")
-		.then((response) => response.json())
-		.then((materias) => {
-			console.log(materias);
-		})
-		.catch((error) => error);
-}
- async function consultar() {
+async function consultar() {
 	await fetch("https://localhost:44351/api/PersonaMaterias")
 		.then((response) => response.json())
 		.then((materias) => {
@@ -55,7 +47,7 @@ function seleccionarDocente(select) {
 		.then((response) => response.json())
 		.then((personas) =>
 			personas.forEach((persona) => {
-				if (persona.Tp_Id == 1) {
+				if (persona.Tp_Id == 1 && persona.Activo) {
 					select.innerHTML += `<option value = ${persona.Id}>  ${persona.Nombres}  </option>`;
 				}
 			})

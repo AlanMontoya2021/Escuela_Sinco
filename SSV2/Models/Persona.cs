@@ -29,8 +29,8 @@ namespace SSV2.Models
         public int Tp_Id { get; set; }
     
         public TDoc TDocs { get; set; }
-        public TipoPersona TipoPersonas { get; set; }
+        public  TipoPersona TipoPersonas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<PersonaMateria> PersonaMaterias { get; set; }
+        public  ICollection<PersonaMateria> PersonaMaterias { get; set; }
     }
 }

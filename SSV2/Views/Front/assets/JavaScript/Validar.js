@@ -4,7 +4,7 @@ const expresiones ={
        nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
        apellido: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
        nota: /^\d{1,2}$/, //Solo numeros del 0 al 5.
-       documento: /^\d{7,14}$/ //Solo numeros.
+       documento: /^\d{7,10}$/ //Solo numeros.
 }
 
 

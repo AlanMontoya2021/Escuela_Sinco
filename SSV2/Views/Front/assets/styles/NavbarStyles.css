@@ -10,6 +10,9 @@
 	padding: 30%;
 	padding-top: 10px;
 }
+.nav-bar ul li :hover {
+    color:#F2F2F2;
+}
 .img:hover{
 	color:#f2f2f2;
 }
@@ -136,3 +139,10 @@ ul a {
 display:block;
 stroke-dashoffset: 1;
 }
+
+
+.tituloTabla{
+    position: relative;
+    left: 15%;
+}
+
